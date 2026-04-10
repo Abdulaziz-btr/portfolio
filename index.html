@@ -336,23 +336,193 @@ footer span { color: var(--blue); }
 .reveal-delay-3 { transition-delay: .3s; }
 .reveal-delay-4 { transition-delay: .4s; }
 
-/* MOBILE */
-@media (max-width: 900px) {
-  #hero { grid-template-columns: 1fr; padding: 120px 0 60px; gap: 48px; }
-  .xp-row { grid-template-columns: 1fr !important; }
-  .xp-left .xp-card { text-align: left; padding: 0 0 24px 0 !important; }
-  .xp-right .xp-card { padding: 0 0 24px 0 !important; }
-  .xp-left .xp-card > div[style*="justify-content:flex-end"] { justify-content: flex-start !important; }
-  .xp-row > div:not(.xp-card) { display: none !important; }
+/* ── HAMBURGER BUTTON ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  z-index: 200;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform .35s cubic-bezier(.16,1,.3,1), opacity .25s, width .25s;
+  transform-origin: center;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── MOBILE FULLSCREEN MENU ── */
+#mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: rgba(5,5,8,0.75);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s cubic-bezier(.16,1,.3,1);
+  border: 1px solid var(--card-border);
+}
+#mobile-menu.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.mobile-menu-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+  padding: 0 24px;
+}
+.mobile-nav-link {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 16px 24px;
+  font-family: var(--heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: background .2s, border-color .2s, transform .2s;
+  letter-spacing: -0.01em;
+}
+.mobile-nav-link:hover, .mobile-nav-link:active {
+  background: rgba(59,130,246,0.12);
+  border-color: rgba(59,130,246,0.3);
+  transform: scale(1.02);
+}
+.mobile-nav-cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 16px 24px;
+  margin-top: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, var(--blue), #1d4ed8);
+  border: none;
+  border-radius: 100px;
+  text-decoration: none;
+  box-shadow: 0 0 28px rgba(59,130,246,0.4);
+  transition: transform .2s, box-shadow .2s;
+}
+.mobile-nav-cta:hover { transform: scale(1.03); box-shadow: 0 0 40px rgba(59,130,246,0.6); }
+.mobile-menu-logo {
+  font-family: var(--heading);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--white);
+  margin-bottom: 24px;
+  text-decoration: none;
+}
+.mobile-menu-logo span { color: var(--blue); }
+
+/* ── TABLET: 2-col grids ── */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .projects-grid { grid-template-columns: 1fr 1fr; }
+  .project-card.featured { grid-column: span 2; }
+  .edu-grid { grid-template-columns: 1fr 1fr; }
+  #hero-inner { gap: 40px !important; }
+  .avatar-stage { width: 340px; height: 390px; }
+  .chip1,.chip2 { display: flex; }
+  .chip3,.chip4 { display: none; }
+}
+
+/* ── MOBILE: < 768px ── */
+@media (max-width: 768px) {
+  /* Hide desktop nav, show hamburger */
+  .nav-links { display: none !important; }
+  .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+
+  /* Cursor off on touch */
+  #cursor, #cursor-ring { display: none !important; }
+  body { cursor: auto; }
+  a, button { cursor: pointer; }
+
+  /* Container padding tighter */
+  .container { padding: 0 18px; }
+
+  /* Hero stacks vertically */
+  #hero-inner {
+    grid-template-columns: 1fr !important;
+    padding-top: 110px !important;
+    padding-bottom: 60px !important;
+    gap: 36px !important;
+    min-height: unset !important;
+  }
   .hero-right { order: -1; }
-  .avatar-stage { width: 280px; height: 320px; }
+  .avatar-stage { width: clamp(200px, 65vw, 280px); height: clamp(230px, 75vw, 320px); }
   .chip1,.chip2,.chip3,.chip4 { display: none; }
-  .about-grid { grid-template-columns: 1fr; }
+
+  /* Fluid hero type */
+  .hero-title { font-size: clamp(2rem, 8.5vw, 3rem); }
+  .hero-sub { font-size: clamp(.9rem, 3.5vw, 1.05rem); }
+  .hero-stats { gap: 20px; }
+  .stat-num { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+
+  /* Section spacing */
+  #about, #projects, #experience, #education,
+  section[id="contact"] { padding: 70px 0 !important; }
+  .section-header { margin-bottom: 40px; }
+  .section-title { font-size: clamp(1.5rem, 6vw, 2rem); }
+
+  /* Grids: single column */
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  .skills-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .projects-grid { grid-template-columns: 1fr; }
   .project-card.featured { grid-column: span 1; }
-  .edu-grid { grid-template-columns: 1fr; }
-  .contact-box { padding: 36px 24px; }
-  .nav-links { display: none; }
+  .edu-grid { grid-template-columns: 1fr; gap: 14px; }
+
+  /* Experience alternating timeline → single col */
+  .xp-row { grid-template-columns: 1fr !important; gap: 0 !important; }
+  .xp-left .xp-card { text-align: left !important; padding: 0 0 24px 0 !important; }
+  .xp-right .xp-card { padding: 0 0 24px 0 !important; }
+  .xp-row > div:not(.xp-card) { display: none !important; }
+  /* stat bar in experience */
+  div[style*="grid-template-columns:repeat(4,1fr)"] { grid-template-columns: 1fr 1fr !important; }
+
+  /* Cards: disable 3D tilt (touch devices) */
+  .project-card, .edu-card { transform-style: flat !important; }
+
+  /* Contact */
+  .contact-box { padding: 32px 20px; border-radius: 20px; }
+  .contact-title { font-size: clamp(1.4rem, 6vw, 2rem); }
+  .contact-links { flex-direction: column; align-items: stretch; }
+  .contact-link { justify-content: center; }
+
+  /* Prevent any horizontal overflow */
+  section, .container, .about-grid, .projects-grid, .edu-grid { max-width: 100%; overflow-x: hidden; }
+}
+
+/* ── VERY SMALL: < 380px ── */
+@media (max-width: 380px) {
+  .skills-grid { grid-template-columns: 1fr; }
+  .hero-title { font-size: clamp(1.7rem, 9vw, 2.2rem); }
+  .hero-actions { flex-direction: column; }
+  .btn-primary, .btn-ghost { text-align: center; }
 }
 </style>
 </head>
@@ -361,6 +531,19 @@ footer span { color: var(--blue); }
 <canvas id="bg-canvas"></canvas>
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
+
+<!-- MOBILE FULLSCREEN MENU -->
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <div class="mobile-menu-inner">
+    <a href="#" class="mobile-menu-logo">Ab<span>.</span>dev</a>
+    <a href="#about"      class="mobile-nav-link" data-close>About</a>
+    <a href="#projects"   class="mobile-nav-link" data-close>Projects</a>
+    <a href="#experience" class="mobile-nav-link" data-close>Experience</a>
+    <a href="#education"  class="mobile-nav-link" data-close>Education</a>
+    <a href="#contact"    class="mobile-nav-link" data-close>Contact</a>
+    <a href="mailto:buterabdul@gmail.com" class="mobile-nav-cta" data-close>✉️ Hire Me</a>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav id="navbar">
@@ -374,6 +557,9 @@ footer span { color: var(--blue); }
       <li><a href="#contact">Contact</a></li>
     </ul>
     <a href="mailto:buterabdul@gmail.com" class="nav-cta">Hire Me</a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
@@ -761,29 +947,81 @@ footer span { color: var(--blue); }
 </footer>
 
 <script>
-// ── CURSOR ──
+// ── TOUCH DETECTION ──
+const isTouch = () => window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+
+// ── CURSOR (desktop only) ──
 const cursor = document.getElementById("cursor");
 const ring = document.getElementById("cursor-ring");
 let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + "px"; cursor.style.top = my + "px"; });
-function animRing() { rx += (mx - rx) * .12; ry += (my - ry) * .12; ring.style.left = rx + "px"; ring.style.top = ry + "px"; requestAnimationFrame(animRing); }
-animRing();
-document.querySelectorAll("a, button, .project-card, .skill-pill").forEach(el => {
-  el.addEventListener("mouseenter", () => { ring.style.width = "56px"; ring.style.height = "56px"; ring.style.opacity = ".5"; });
-  el.addEventListener("mouseleave", () => { ring.style.width = "36px"; ring.style.height = "36px"; ring.style.opacity = "1"; });
+if (!isTouch()) {
+  document.addEventListener("mousemove", e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + "px"; cursor.style.top = my + "px";
+  });
+  function animRing() {
+    rx += (mx - rx) * .12; ry += (my - ry) * .12;
+    ring.style.left = rx + "px"; ring.style.top = ry + "px";
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll("a, button, .project-card, .skill-pill").forEach(el => {
+    el.addEventListener("mouseenter", () => { ring.style.width="56px"; ring.style.height="56px"; ring.style.opacity=".5"; });
+    el.addEventListener("mouseleave", () => { ring.style.width="36px"; ring.style.height="36px"; ring.style.opacity="1"; });
+  });
+}
+
+// ── HAMBURGER MENU ──
+const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobile-menu");
+
+function openMenu() {
+  mobileMenu.classList.add("open");
+  hamburger.classList.add("open");
+  hamburger.setAttribute("aria-expanded", "true");
+  document.body.style.overflow = "hidden";
+}
+function closeMenu() {
+  mobileMenu.classList.remove("open");
+  hamburger.classList.remove("open");
+  hamburger.setAttribute("aria-expanded", "false");
+  document.body.style.overflow = "";
+}
+
+hamburger.addEventListener("click", () => {
+  mobileMenu.classList.contains("open") ? closeMenu() : openMenu();
+});
+
+// Close on link click
+document.querySelectorAll("[data-close]").forEach(el => {
+  el.addEventListener("click", closeMenu);
+});
+
+// Close on backdrop click
+mobileMenu.addEventListener("click", e => {
+  if (e.target === mobileMenu) closeMenu();
+});
+
+// Close on Escape key
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeMenu();
 });
 
 // ── NAVBAR SCROLL ──
 const nav = document.getElementById("navbar");
-window.addEventListener("scroll", () => { nav.classList.toggle("scrolled", window.scrollY > 60); });
+window.addEventListener("scroll", () => {
+  nav.classList.toggle("scrolled", window.scrollY > 60);
+});
 
 // ── CANVAS PARTICLES ──
 const canvas = document.getElementById("bg-canvas");
 const ctx = canvas.getContext("2d");
 let W, H, particles = [];
+// Fewer particles on mobile for performance
+const PARTICLE_COUNT = isTouch() ? 25 : 60;
 function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
 resize(); window.addEventListener("resize", resize);
-for (let i = 0; i < 60; i++) {
+for (let i = 0; i < PARTICLE_COUNT; i++) {
   particles.push({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.5+0.3, vx: (Math.random()-.5)*.3, vy: (Math.random()-.5)*.3, o: Math.random()*.4+.05 });
 }
 function drawParticles() {
@@ -803,34 +1041,40 @@ drawParticles();
 const reveals = document.querySelectorAll(".reveal");
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); } });
-}, { threshold: 0.12 });
+}, { threshold: 0.1 });
 reveals.forEach(el => observer.observe(el));
 
-// Timeline
+// Timeline reveal
 const tlItems = document.querySelectorAll(".timeline-item");
 const tlObs = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add("visible"), i * 150); tlObs.unobserve(e.target); } });
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) { setTimeout(() => e.target.classList.add("visible"), i * 150); tlObs.unobserve(e.target); }
+  });
 }, { threshold: 0.1 });
 tlItems.forEach(el => tlObs.observe(el));
 
-// ── 3D CARD TILT ──
-document.querySelectorAll(".project-card, .edu-card").forEach(card => {
-  card.addEventListener("mousemove", e => {
-    const r = card.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - .5;
-    const y = (e.clientY - r.top) / r.height - .5;
-    card.style.transform = `translateY(-6px) rotateX(${-y*8}deg) rotateY(${x*8}deg)`;
+// ── 3D CARD TILT — desktop only, degrades on touch ──
+if (!isTouch()) {
+  document.querySelectorAll(".project-card, .edu-card").forEach(card => {
+    card.addEventListener("mousemove", e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5;
+      const y = (e.clientY - r.top) / r.height - .5;
+      card.style.transform = `translateY(-6px) rotateX(${-y*8}deg) rotateY(${x*8}deg)`;
+    });
+    card.addEventListener("mouseleave", () => { card.style.transform = ""; });
   });
-  card.addEventListener("mouseleave", () => { card.style.transform = ""; });
-});
+}
 
-// ── PARALLAX HERO ──
-const avatarImg = document.getElementById("avatar-img");
-document.addEventListener("mousemove", e => {
-  const dx = (e.clientX / window.innerWidth - .5) * 12;
-  const dy = (e.clientY / window.innerHeight - .5) * 8;
-  if (avatarImg) avatarImg.style.transform = `translateY(calc(-12px * var(--float,0) + ${dy}px)) translateX(${dx/2}px)`;
-});
+// ── PARALLAX HERO — desktop only ──
+if (!isTouch()) {
+  const avatarImg = document.getElementById("avatar-img");
+  document.addEventListener("mousemove", e => {
+    const dx = (e.clientX / window.innerWidth - .5) * 12;
+    const dy = (e.clientY / window.innerHeight - .5) * 8;
+    if (avatarImg) avatarImg.style.transform = `translateY(calc(-12px * var(--float,0) + ${dy}px)) translateX(${dx/2}px)`;
+  });
+}
 </script>
 
 </body>
